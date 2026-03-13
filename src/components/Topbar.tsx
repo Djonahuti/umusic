@@ -6,7 +6,6 @@ import { Input } from "./ui/input";
 import Link from "next/link";
 import { useAuth } from "@/lib/AuthContext";
 import React from "react";
-import { User } from "@/types";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "./ui/dropdown-menu";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { usePlayer } from "@/lib/playerContext";

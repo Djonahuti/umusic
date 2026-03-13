@@ -2,7 +2,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useAuth } from "@/lib/AuthContext";
 import { cn } from "@/lib/utils";
-import { User } from "@/types";
 import { IconPlaylist } from "@tabler/icons-react";
 import {
   Calendar,

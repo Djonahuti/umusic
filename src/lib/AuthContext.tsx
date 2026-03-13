@@ -7,8 +7,8 @@ import { apiLogin, apiRegister } from "./api"
 interface AuthContextProps {
   user: User | null
   loading: boolean
-  signUp: (email: string, password: string, fullName?: string) => Promise<{ user?: User | null; error?: any }>
-  signIn: (email: string, password: string) => Promise<{ user?: User | null; error?: any }>
+  signUp: (email: string, password: string, fullName?: string) => Promise<{ user?: User | null; error?: unknown }>
+  signIn: (email: string, password: string) => Promise<{ user?: User | null; error?: unknown }>
   signOut: () => Promise<void>
 }
 
@@ -39,7 +39,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         window.localStorage.setItem("umusic_user", JSON.stringify(newUser))
       }
       return { user: newUser, error: null }
-    } catch (error) {
+    } catch (error: unknown) {
       return { user: null, error }
     }
   }
@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         window.localStorage.setItem("umusic_user", JSON.stringify(loggedIn))
       }
       return { user: loggedIn, error: null }
-    } catch (error) {
+    } catch (error: unknown) {
       return { user: null, error }
     }
   }

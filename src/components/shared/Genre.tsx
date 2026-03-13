@@ -45,7 +45,14 @@ export function Genre() {
   useEffect(() => {
     const fetchGenres = async () => {
       const data = await apiFetchGenres();
-      setGenres(data as any);
+      setGenres(
+        (data || []).map((g) => ({
+          id: g.id,
+          name: g.name || "",
+          description: g.description || "",
+          songs: [],
+        }))
+      );
     };
     fetchGenres();
   }, []);
@@ -54,7 +61,7 @@ export function Genre() {
     const fetchSongs = async () => {
       if (!selectedGenre) return;
       const data = await apiFetchSongs({ genreId: selectedGenre.id });
-      setSongs(data as any);
+      setSongs((data || []) as Song[]);
     };
     fetchSongs();
   }, [selectedGenre]);

@@ -1,6 +1,4 @@
 "use client"
-import * as React from "react"
-import { useEffect, useState } from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import { ChevronRight, LogOutIcon, UserCircle } from "lucide-react"
@@ -37,7 +35,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { useAuth } from "@/lib/AuthContext"
-import { User } from "@/types"
 import { SearchForm } from "@/components/SearchForm"
 import Logo from "../../../public/Logo"
 import { Separator } from "@/components/ui/separator"

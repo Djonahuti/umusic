@@ -12,9 +12,15 @@ const AUDIO_BASE =
 
 type HttpMethod = "GET" | "POST";
 
+interface RequestOptions {
+  method?: HttpMethod;
+  query?: Record<string, string | number | boolean | undefined>;
+  body?: unknown;
+}
+
 async function requestJson<T>(
   path: string,
-  options: { method?: HttpMethod; query?: Record<string, string | number | boolean | undefined>; body?: any } = {},
+  options: RequestOptions = {},
 ): Promise<T> {
   const url = new URL(path, API_BASE + "/");
   if (options.query) {
@@ -50,7 +56,7 @@ export function getAudioUrl(fileName: string | null | undefined): string {
 
 // Types that mirror the backend payloads
 
-export interface ApiUser extends AppUser {}
+export type ApiUser = AppUser;
 
 export interface ApiArtist {
   id: string;
@@ -529,7 +535,7 @@ export async function apiUpdateUser(payload: {
   is_admin?: boolean;
 }): Promise<ApiUser> {
   // Backend column is `fullname`, but our type uses `fullName`
-  const body: any = {
+  const body: Record<string, unknown> = {
     action: "update",
     id: payload.id,
   };
