@@ -13,24 +13,22 @@ import { useAuth } from "@/lib/AuthContext";
 interface Song {
   id: string;
   title: string;
-  album_id: string;
-  plays: number;
-  audio_url?: string;
-  cover_url?: string;
-  duration?: number;
-  track_no?: number;
+  album_id: string | null;
+  plays: number | null;
+  audio_url?: string | null;
+  cover_url?: string | null;
+  duration?: number | null;
+  track_no?: number | null;
 }
 
 interface Album {
   id: string;
   name: string;
   cover_url: string;
-  release_date: string;
   info: string;
   artists: {
-    name: string;
+    name: string | null;
   };
-  songs: Song[];
 }
 
 function formatDuration(seconds: number) {
