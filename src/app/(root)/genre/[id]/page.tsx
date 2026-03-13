@@ -4,7 +4,7 @@ import React, { useState, useEffect } from "react";
 import { Play, MoreHorizontal, ChevronLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { apiFetchGenre, apiFetchSongs, getAudioUrl } from "@/lib/api";
+import { apiFetchGenre, apiFetchSongs, getAudioUrl, type ApiSong } from "@/lib/api";
 import { usePlayer } from "@/lib/playerContext";
 import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,18 +17,7 @@ interface Genre {
   songs: Song[];  
 }
 
-interface Song {
-  id: string;
-  title: string;
-  album_id: string;
-  artist_id: string;
-  artists: { name: string } | null;
-  plays: number;
-  audio_url?: string;
-  cover_url?: string;
-  duration?: number;
-  track_no?: number;
-}
+type Song = ApiSong;
 
 function formatDuration(seconds: number) {
   const mins = Math.floor(seconds / 60);
@@ -133,7 +122,7 @@ export default function GenreDetail({ params }: { params: Promise<{ id: string }
               {songs.map((song) => (
                 <div key={song.id} className="flex items-center justify-between">
                   <div className="flex items-center gap-4">
-                    <span className="text-gray-400">{song.track_no}</span>
+                    <span className="text-gray-400">{song.track_no ?? 0}</span>
                     <Image
                       src={song.cover_url || "/utmusic.png"}
                       alt={song.title}
@@ -146,7 +135,7 @@ export default function GenreDetail({ params }: { params: Promise<{ id: string }
                     </span>
                   </div>
                   <div className="hidden md:flex items-center gap-6 text-sm text-gray-400">
-                    <span>{song.plays}+ plays</span>
+                    <span>{song.plays ?? 0}+ plays</span>
                     <span>{song.duration ? formatDuration(song.duration) : 'N/A'}</span>
                   </div>
                 </div>

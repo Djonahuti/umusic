@@ -1,5 +1,5 @@
 'use client';
-import { apiFetchArtist, apiFetchSongs, apiFollowArtist, apiFetchFollowing, getAudioUrl } from "@/lib/api";
+import { apiFetchArtist, apiFetchSongs, apiFollowArtist, apiFetchFollowing, getAudioUrl, type ApiArtist, type ApiSong } from "@/lib/api";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
@@ -10,22 +10,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { useAuth } from "@/lib/AuthContext";
 
-interface Artist {
-  id: string
-  name: string
-  bio: string
-  image_url: string
-}
-
-interface Song {
-  id: string;
-  title: string;
-  cover_url?: string;
-  plays: number;
-  audio_url?: string;
-  duration?: number;
-  track_no?: number;
-}
+type Song = ApiSong;
 
 function formatDuration(seconds: number) {
   const mins = Math.floor(seconds / 60);
@@ -35,7 +20,7 @@ function formatDuration(seconds: number) {
 
 export default function ArtistInfo({ params }: { params: Promise<{ artistId: string }> }) {
   const player = usePlayer();
-  const [artist, setArtist] = useState<Artist | null>(null);
+  const [artist, setArtist] = useState<ApiArtist | null>(null);
   const [songs, setSongs] = useState<Song[]>([]);
   const [error, setError] = useState<string | null>(null);
   const { artistId } = React.use(params);
@@ -47,7 +32,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
     const fetchArtistAndSongs = async () => {
       try {
         const artistData = await apiFetchArtist(artistId);
-        setArtist(artistData as Artist);
+        setArtist(artistData);
 
         const songsData = await apiFetchSongs({ artistId });
         setSongs(songsData || []);
@@ -99,7 +84,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
                 {/* Header Section */}
                 <div className="relative h-60 md:h-80 w-full">
                   <Image
-                    src={artist.image_url}
+                    src={artist.image_url || '/utmusic.png'}
                     alt={artist.name}
                     fill
                     className="object-cover"
@@ -107,7 +92,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
                   <div className="absolute inset-0 flex flex-col justify-end px-6 pb-6">
                     <Avatar className="w-24 h-24 mb-2 rounded-full overflow-hidden">
                       <AvatarImage
-                        src={artist.image_url}
+                        src={artist.image_url || '/utmusic.png'}
                         alt={artist.name}
                         className="rounded-full w-full h-full object-cover"
                       />
@@ -174,7 +159,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
                   {songs.map((song) => (
                     <div key={song.id} className="flex items-center justify-between">
                       <div className="flex items-center gap-4">
-                        <span className="text-gray-400">{song.track_no}</span>
+                        <span className="text-gray-400">{song.track_no ?? 0}</span>
                         <Image
                           src={song.cover_url || "/utmusic.png"}
                           alt={song.title}
@@ -187,7 +172,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
                         </span>
                       </div>
                       <div className="hidden md:flex items-center gap-6 text-sm text-gray-400">
-                        <span>{song.plays}+ plays</span>
+                        <span>{song.plays ?? 0}+ plays</span>
                         <span>{song.duration ? formatDuration(song.duration) : 'N/A'}</span>
                       </div>
                     </div>
@@ -203,7 +188,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
                   <CardContent className="flex flex-col md:flex-row items-center gap-6 p-6">
                     <Avatar className="w-36 h-36">
                       <AvatarImage
-                        src={artist.image_url}
+                        src={artist.image_url || '/utmusic.png'}
                         alt={artist.name}
                       />
                       <AvatarFallback>{artist.name.substring(0, 2)}</AvatarFallback>
@@ -214,7 +199,7 @@ export default function ArtistInfo({ params }: { params: Promise<{ artistId: str
                         3,590,023 <span className="text-sm font-normal">monthly listeners</span>
                       </p>
                       <p className="mt-2 text-gray-500 leading-relaxed">
-                        {artist.bio}
+                        {artist.bio || 'No bio available'}
                       </p>
                     </div>
                   </CardContent>
