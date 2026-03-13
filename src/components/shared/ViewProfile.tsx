@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Music, Pencil } from "lucide-react"
 import { useAuth } from "@/lib/AuthContext"
-import { apiFetchUser, apiFetchUserPlaylists, apiFetchFollowing } from "@/lib/api"
+import { apiFetchUser, apiFetchUserPlaylists, apiFetchFollowing, type ApiPlaylist } from "@/lib/api"
 import Link from "next/link"
 import { Button } from "../ui/button"
 import { toast } from "sonner"
@@ -19,12 +19,7 @@ interface UserProfile {
   avatar_url: string
 }
 
-interface Playlist {
-  id: string
-  title: string
-  image_url: string | null
-  description: string | null
-}
+type Playlist = ApiPlaylist;
 
 // Dummy data and handler for favourite artists
 interface Following {
@@ -59,12 +54,7 @@ export default function ProfilePage() {
           email: userData.email,
           avatar_url: userData.avatar_url || "",
         })
-        setPlaylists((playlistData || []).map((p) => ({
-          id: p.id,
-          title: p.title,
-          image_url: p.image_url,
-          description: p.description,
-        })))
+        setPlaylists(playlistData || [])
         setFollowing(
           (followingData || []).map((item) => ({
             id: String(item.id),

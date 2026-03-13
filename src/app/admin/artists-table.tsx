@@ -4,19 +4,14 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { apiFetchArtists, apiUpdateArtist, apiDeleteArtist } from "@/lib/api";
+import { apiFetchArtists, apiUpdateArtist, apiDeleteArtist, type ApiArtist } from "@/lib/api";
 import { Pencil, Trash } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AddArtistForm } from "./add-artist-form";
 
-interface Artist {
-  id: string
-  name: string
-  bio: string
-  image_url: string
-}
+type Artist = ApiArtist;
 
 export function ArtistTable() {
   const [artists, setArtists] = useState<Artist[]>([])
@@ -91,7 +86,7 @@ export function ArtistTable() {
             <TableRow key={artist.id} className="border-t">
               <TableCell>
                 <Image
-                 src={artist.image_url} 
+                 src={artist.image_url ?? '/utmusic.png'} 
                  alt="artist" 
                  className="w-12 h-12 object-cover rounded-full" 
                  width={48}
@@ -99,7 +94,7 @@ export function ArtistTable() {
                 />
               </TableCell>
               <TableCell>{artist.name}</TableCell>
-              <TableCell className="max-w-[200px] truncate">{artist.bio}</TableCell>
+              <TableCell className="max-w-[200px] truncate">{artist.bio || 'No bio'}</TableCell>
               <TableCell className="flex gap-2">
                 <Dialog>
                   <DialogTrigger asChild>

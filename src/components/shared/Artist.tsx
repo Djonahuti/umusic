@@ -1,19 +1,14 @@
 "use client";
 
 import { Input } from "@/components/ui/input";
-import { apiFetchArtists } from "@/lib/api";
+import { apiFetchArtists, type ApiArtist } from "@/lib/api";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { LayoutGrid, Plus, Search, X } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
-interface Artist {
-  id: string
-  name: string
-  bio: string
-  image_url: string
-}
+type Artist = ApiArtist;
 
 export function Artist() {
   const router = useRouter();  
@@ -91,7 +86,7 @@ export function Artist() {
            className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-800 transition-colors duration-200 cursor-pointer"
           >
             <Avatar className="w-24 h-24 mb-2 rounded-full overflow-hidden">
-              <AvatarImage src={artist.image_url} alt={artist.name} className="object-cover w-full h-full" />
+              <AvatarImage src={artist.image_url ? artist.image_url : '/utmusic.png'} alt={artist.name} className="object-cover w-full h-full" />
               <AvatarFallback className="bg-gray-700 text-white text-xl">{artist.name.substring(0, 2)}</AvatarFallback>
             </Avatar>
             <span className="text-sm font-medium text-center">{artist.name}</span>
